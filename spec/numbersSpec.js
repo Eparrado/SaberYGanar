@@ -21,6 +21,8 @@ describe('calculo de marcador', function () {
     function recalcularMarcador(puntos, esCorrecta, tiempo) {
         if (esCorrecta && tiempo <= 2) {
             return puntos + 2;
+        } else {
+            return puntos + 1;
         }
     }
 
