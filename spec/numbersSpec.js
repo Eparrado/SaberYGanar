@@ -7,6 +7,8 @@
 *           Caso de estudio - (1 punto, correcta, 1 segundo) -> 3 puntos
 *      
 *      Si fallo pregunta en mas de 10 segundos - resto 2 puntos
+*           Caso de estudio - (3 puntos, incorrecta, 12 segundos) - 1 punto
+*           Caso de estudio - (2 puntos, incorrecta, 12 segundos) - 0 puntos           
 *
 *      Si acierto pregunta entre 2 y 10 segundos - sumo 1 punto
 *           Caso de estudio - (1 punto, correcta, 5 segundos) -> 2 puntos
@@ -44,4 +46,8 @@ describe('calculo de marcador', function () {
         expect(recalcularMarcador(1, true, 5)).toBe(2);
         expect(recalcularMarcador(1, true, 12)).toBe(1);
     });
+
+    it("resta puntos por fallar y ser lento", function () {
+        expect(recalcularMarcador(3, false, 12)).toBe(1);
+    })
 });
