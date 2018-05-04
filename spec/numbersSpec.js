@@ -17,6 +17,7 @@
 *           Caso de estudio - (1 punto, correcta, 12 segundos) -> 1 punto 
 *
 *      Si fallo antes de 10 segundos - resto 1 punto
+*           Caso de estudio - (5 puntos, incorrecta, 3 segundos) -> 4 puntos
 *
 *      No se puede pasar sin responder
 *
@@ -32,6 +33,10 @@ describe('calculo de marcador', function () {
             return puntos + 2;
         } else if (esCorrecta && tiempo <= 10) {
             return puntos + 1;
+        } else if (!esCorrecta && tiempo <= 10) {
+            return puntos - 1;
+        } else if (!esCorrecta && tiempo >= 10) {
+            return puntos - 2;
         }
 
         return puntos;
@@ -44,10 +49,15 @@ describe('calculo de marcador', function () {
 
     it("suma menos puntos si acierto más lento", function () {
         expect(recalcularMarcador(1, true, 5)).toBe(2);
-        expect(recalcularMarcador(1, true, 12)).toBe(1);
+        expect(recalcularMarcador(0, true, 12)).toBe(0);
+    });
+
+    it("resta menos puntos por faller pero ser rápido", function () {
+        expect(recalcularMarcador(5, false, 3)).toBe(4);
     });
 
     it("resta puntos por fallar y ser lento", function () {
         expect(recalcularMarcador(3, false, 12)).toBe(1);
-    })
+        expect(recalcularMarcador(2, false, 12)).toBe(0);
+    });
 });
