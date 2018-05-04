@@ -7,13 +7,17 @@
 *           Caso de estudio - (1 punto, correcta, 1 segundo) -> 3 puntos
 *      
 *      Si fallo pregunta en mas de 10 segundos - resto 2 puntos
+*
 *      Si acierto pregunta entre 2 y 10 segundos - sumo 1 punto
 *           Caso de estudio - (1 punto, correcta, 5 segundos) -> 2 puntos
 *      
 *      Si acierto y tardo mas de 10 segundos - 0 puntos
 *           Caso de estudio - (1 punto, correcta, 12 segundos) -> 1 punto 
+*
 *      Si fallo antes de 10 segundos - resto 1 punto
+*
 *      No se puede pasar sin responder
+*
 *      Si en 20 segundos no has respondido , pasa a siguiente pregunta y pierdes 3 punto
 *
 *
