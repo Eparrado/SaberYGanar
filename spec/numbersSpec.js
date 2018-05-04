@@ -26,16 +26,87 @@
 *
 * */
 
+/*
+* TO DO - List 
+*
+*  reponder a las preguntas, acierto o fallo
+*    
+*      Si respongo correctente - Acierto la pregunta
+*        Caso de estudio - La respuesta del usuario es igual que la correcta -> isCorrect es true
+*
+*      Si respondo incorrectamente - Fallo la pregunta
+*        Caso de estudio - La respuesta del usuario es distinta a la correcta -> isCorrect es false
+*
+*      Si las respuestas no corresponden a esa pregunta 
+*        Caso de estudio - Las respuestan tienen un id diferente al que tiene la pregunta - isCorrect es false y no sigue con la función
+*
+*/
 
-describe('calculo de marcador cuando acierta la pregunta', function () {
+describe('comprobar si la respuesta es correcta', function () {
+    var question = {
+        id: 1,
+        title: '¿Qué día es hoy?',
+        answers: [
+            { id: 1, answer: 'Lunes' },
+            { id: 2, answer: 'Jueves' },
+            { id: 3, answer: 'Viernes' }
+        ],
+        correctAnswer: { id: 3 }
+    };
+    var userAnswerIncorrect = { answerId: 1, id: 2 };
+    var userAnswerCorrect = { answerId: 1, id: 3 };
+    var userAnswerDiferentId = { answerId: 3, id: 3 };
+
+    function isCorrect(question, userAnswer) {
+        if (question.id !== userAnswer.answerId) {
+            return false;
+        }
+        if (question.correctAnswer.id === userAnswer.id) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    it('reconoce una respuesta correcta', function () {
+        expect(isCorrect(question, userAnswerCorrect)).toBeTruthy();
+    });
+
+    it('reconoce una respuesta incorrecta', function () {
+        expect(isCorrect(question, userAnswerIncorrect)).toBeFalsy();
+    });
+
+    it('reconoce si se está responiendo la respuesta que corresponde a esa pregunta', function () {
+        expect(isCorrect(question, userAnswerDiferentId)).toBeFalsy();
+    });
+
+});
+
+
+describe('calculo de marcador', function () {
     function recalcularAcertandoPregunta(marcador, tiempo) {
         if (tiempo <= 2) {
             return marcador + 2;
-        } else if (tiempo <= 10) {
+        }
+        if (tiempo <= 10) {
             return marcador + 1;
-        } else if (tiempo > 10) {
+        }
+        if (tiempo > 10) {
             return marcador;
         }
+    }
+
+    function recalcularFallandoPregunta(marcador, tiempo) {
+        if (tiempo <= 10) {
+            return marcador - 1;
+        }
+        if (tiempo > 10) {
+            return marcador - 2;
+        }
+    }
+
+    function recalcularSinRespuesta(marcador) {
+        return marcador - 3;
     }
 
     it("suma mas puntos si acierta muy rapido", function () {
@@ -47,16 +118,6 @@ describe('calculo de marcador cuando acierta la pregunta', function () {
         expect(recalcularAcertandoPregunta(1, 5)).toBe(2);
         expect(recalcularAcertandoPregunta(0, 12)).toBe(0);
     });
-});
-
-describe('calculo del marcador cuando falla la pregunta', function () {
-    function recalcularFallandoPregunta(marcador, tiempo) {
-        if (tiempo <= 10) {
-            return marcador - 1;
-        } else if (tiempo < 20) {
-            return marcador - 2;
-        }
-    }
 
     it("resta menos puntos por faller pero ser rápido", function () {
         expect(recalcularFallandoPregunta(5, 3)).toBe(4);
@@ -67,17 +128,8 @@ describe('calculo del marcador cuando falla la pregunta', function () {
         expect(recalcularFallandoPregunta(2, 12)).toBe(0);
     });
 
-});
-
-describe('calculo del marcador cuando se acaba el tiempo', function () {
-
-    var temporizador = setTimeout(preguntaNoContestada, 21000);
-    function preguntaNoContestada(marcador) {
-        return marcador - 3;
-    }
-
     it("resta puntos si no respondes en menos de 20 segundos", function () {
-        expect(preguntaNoContestada(3)).toBe(0);
+        expect(recalcularSinRespuesta(3)).toBe(0);
     });
 });
 

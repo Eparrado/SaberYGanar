@@ -21,7 +21,8 @@ function recalcularMarcador(haRespondido, puntos, esCorrecta, tiempo) {
 function recalcularFallandoPregunta(marcador, tiempo) {
     if (tiempo <= 10) {
         return marcador - 1;
-    } else if (tiempo < 20) {
+    }
+    if (tiempo > 10) {
         return marcador - 2;
     }
 }
@@ -29,9 +30,11 @@ function recalcularFallandoPregunta(marcador, tiempo) {
 function recalcularAcertandoPregunta(marcador, tiempo) {
     if (tiempo <= 2) {
         return marcador + 2;
-    } else if (tiempo <= 10) {
+    }
+    if (tiempo <= 10) {
         return marcador + 1;
-    } else if (tiempo > 10) {
+    }
+    if (tiempo > 10) {
         return marcador;
     }
 }
