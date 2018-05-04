@@ -21,43 +21,49 @@
 *
 *      No se puede pasar sin responder
 *
-*      Si en 20 segundos no has respondido , pasa a siguiente pregunta y pierdes 3 punto
+*      Si en 20 segundos no has respondido, pasa a siguiente pregunta y pierdes 3 punto
 *
 *
 * */
 
 
 describe('calculo de marcador', function () {
-    function recalcularMarcador(puntos, esCorrecta, tiempo) {
-        if (esCorrecta && tiempo <= 2) {
+    function recalcularMarcador(haRespondido, puntos, esCorrecta, tiempo) {
+        if (haRespondido && esCorrecta && tiempo <= 2) {
             return puntos + 2;
-        } else if (esCorrecta && tiempo <= 10) {
+        } else if (haRespondido && esCorrecta && tiempo <= 10) {
             return puntos + 1;
-        } else if (!esCorrecta && tiempo <= 10) {
+        } else if (haRespondido && esCorrecta && tiempo > 10) {
+            return puntos;
+        } else if (haRespondido && !esCorrecta && tiempo <= 10) {
             return puntos - 1;
-        } else if (!esCorrecta && tiempo >= 10) {
+        } else if (haRespondido && !esCorrecta && tiempo >= 10 && tiempo < 20) {
             return puntos - 2;
+        } else {
+            return puntos - 3;
         }
-
-        return puntos;
     }
 
     it("suma mas puntos si acierta muy rapido", function () {
-        expect(recalcularMarcador(0, true, 1)).toBe(2);
-        expect(recalcularMarcador(2, true, 1)).toBe(4);
+        expect(recalcularMarcador(true, 0, true, 1)).toBe(2);
+        expect(recalcularMarcador(true, 2, true, 1)).toBe(4);
     });
 
     it("suma menos puntos si acierto más lento", function () {
-        expect(recalcularMarcador(1, true, 5)).toBe(2);
-        expect(recalcularMarcador(0, true, 12)).toBe(0);
+        expect(recalcularMarcador(true, 1, true, 5)).toBe(2);
+        expect(recalcularMarcador(true, 0, true, 12)).toBe(0);
     });
 
     it("resta menos puntos por faller pero ser rápido", function () {
-        expect(recalcularMarcador(5, false, 3)).toBe(4);
+        expect(recalcularMarcador(true, 5, false, 3)).toBe(4);
     });
 
     it("resta puntos por fallar y ser lento", function () {
-        expect(recalcularMarcador(3, false, 12)).toBe(1);
-        expect(recalcularMarcador(2, false, 12)).toBe(0);
+        expect(recalcularMarcador(true, 3, false, 12)).toBe(1);
+        expect(recalcularMarcador(true, 2, false, 12)).toBe(0);
+    });
+
+    it("resta puntos si no respondes en menos de 20 segundos", function () {
+        expect(recalcularMarcador(false, 3, false, 22)).toBe(0);
     });
 });
