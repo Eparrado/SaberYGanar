@@ -1,4 +1,3 @@
-
 function getQuestions(callback) {
 
     var serverData = [
@@ -52,40 +51,25 @@ getQuestions(function (data) {
 });
 
 
-var interval;
+
+var nextQuestionButton = document.querySelector('.next--question');
+var questionTitle = document.querySelector('.question--title');
+var questionAnswers = document.querySelectorAll('.question--answer');
+
+var i = 0;
 
 function renderQuestion() {
-    var i = 0;
-
-    interval = setTimeout(function () {
-        if (i < questions.length) {
-            console.log(questions[i].title);
-            for (let x = 0; x < questions[i].answers.length; x++) {
-                console.log(questions[i].answers[x].answer);
-            }
-            i++;
+    if (i < questions.length) {
+        questionTitle.innerHTML = (questions[i].title);
+        for (let x = 0; x < questions[i].answers.length; x++) {
+            questionAnswers[x].innerHTML = (questions[i].answers[x].answer);
         }
-    }, 3000);
-}
-
-renderQuestion();
-
-
-
-
-
-
-
-
-
-function isCorrect(question, userAnswer) {
-    if (question.id !== userAnswer.answerId) {
-        return false;
-    }
-    if (question.correctAnswer.id === userAnswer.id) {
-        return true;
-    } else {
-        return false;
+        i++;
     }
 }
+
+nextQuestionButton.addEventListener('click', renderQuestion);
+
+
+
 
