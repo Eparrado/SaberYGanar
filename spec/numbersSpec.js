@@ -42,7 +42,8 @@
 *
 */
 
-describe('comprobar si la respuesta es correcta', function () {
+
+describe('comprobar si la respuesta es correcta a partir de objetos', function () {
     var question = {
         id: 1,
         title: '¿Qué día es hoy?',
@@ -82,6 +83,29 @@ describe('comprobar si la respuesta es correcta', function () {
 
 });
 
+xdescribe('comprobar si la respuesta es correcta a partir de strings', function () {
+
+    function isCorrect(correctAnswer, userAnswer) {
+        if (correctAnswer === userAnswer) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    it('', function () {
+        expect(isCorrect(correctAnswer, userAnswerCorrect)).toBeTruthy();
+    });
+
+    it('reconoce una respuesta incorrecta', function () {
+        expect(isCorrect(correctAnswer, userAnswerIncorrect)).toBeFalsy();
+    });
+
+    it('reconoce si se está responiendo la respuesta que corresponde a esa pregunta', function () {
+        expect(isCorrect(correctAnswer, userAnswerDiferentId)).toBeFalsy();
+    });
+
+});
 
 describe('calculo de marcador', function () {
     function recalcularAcertandoPregunta(marcador, tiempo) {
