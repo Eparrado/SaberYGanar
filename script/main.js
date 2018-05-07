@@ -91,10 +91,12 @@ var questions = [
 ];
 
 
+var interval;
+
 function renderQuestion() {
     var i = 0;
 
-    setInterval(function () {
+    interval = setTimeout(function () {
         if (i < questions.length) {
             console.log(questions[i].title);
             for (let x = 0; x < questions[i].answers.length; x++) {
