@@ -89,15 +89,23 @@ var questions = [
         correctAnswer: { id: 1 }
     }
 ];
-function renderQuestion(i) {
-    console.log(questions[i].title);
+
+
+function renderQuestion() {
+    var i = 0;
+
+    setInterval(function () {
+        if (i < questions.length) {
+            console.log(questions[i].title);
+            for (let x = 0; x < questions[i].answers.length; x++) {
+                console.log(questions[i].answers[x].answer);
+            }
+            i++;
+        }
+    }, 3000);
 }
 
-
-for (let i; i < questions.length; i++) {
-    setInterval(renderQuestion(i), 2000);
-}
-
+renderQuestion();
 
 
 
