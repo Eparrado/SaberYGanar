@@ -53,25 +53,19 @@ getQuestions(function (data) {
 });
 
 /*Temporizador*/
-var clock = document.querySelector('.clock');
-var totalTime = 20;
-var timer;
+var totalTime = 21;
+var timer = setInterval(showTimeInterval, 1000);
 
 function showTimeInterval() {
+    totalTime--;
+    var clock = document.querySelector('.clock');
+    clock.innerHTML = totalTime;
     if (totalTime === 0) {
         renderQuestion();
-        totalTime = 20;
-        setTimeout(showTimeInterval, 1000);
-    } else {
-        --totalTime;
-        timer = setTimeout(showTimeInterval, 1000);
+        clearInterval(counter);
+
     }
-    clock.innerHTML = totalTime;
 }
-
-
-
-
 
 
 
@@ -98,6 +92,8 @@ var questionAnswers = document.querySelectorAll('.question--answer');
 var i = 0;
 
 function renderQuestion() {
+    totalTime = 21;
+    showTimeInterval();
     if (i < questions.length) {
         questionTitle.innerHTML = (questions[i].title);
         for (let x = 0; x < questions[i].answers.length; x++) {
