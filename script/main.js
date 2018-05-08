@@ -3,44 +3,44 @@ function getQuestions(callback) {
 
     var serverData = [
         {
-            id: 1,
+            id: 0,
             title: '¿Cuántos años tiene María?',
             answers: [
                 { id: 0, answer: '25' },
                 { id: 1, answer: '33' },
                 { id: 2, answer: '37' }
             ],
-            correctAnswer: { id: 2 }
+            correctAnswer: { id: 1 }
         },
         {
-            id: 2,
+            id: 1,
             title: '¿Cuál es la capital de Zambia?',
             answers: [
                 { id: 0, answer: 'Lusaka' },
                 { id: 1, answer: 'Harare' },
                 { id: 2, answer: 'Madrid' }
             ],
-            correctAnswer: { id: 1 }
+            correctAnswer: { id: 0 }
         },
         {
-            id: 3,
+            id: 2,
             title: '¿Cuál es el nombre completo de Freud?',
             answers: [
                 { id: 0, answer: 'Adolf' },
                 { id: 1, answer: 'Sefarad' },
                 { id: 2, answer: 'Sigmund' }
             ],
-            correctAnswer: { id: 3 }
+            correctAnswer: { id: 2 }
         },
         {
-            id: 4,
+            id: 3,
             title: '¿Cuál es el animal más rápido del mundo?',
             answers: [
                 { id: 0, answer: 'Guepardo' },
                 { id: 1, answer: 'León' },
                 { id: 2, answer: 'Tortuga' }
             ],
-            correctAnswer: { id: 1 }
+            correctAnswer: { id: 0 }
         }
     ];
     callback(serverData);
@@ -82,7 +82,6 @@ startButton.addEventListener('click', showAndStartQuestionContainer);
 var nextQuestionButton = document.querySelector('.next--question');
 var questionTitle = document.querySelector('.question--title');
 var questionAnswers = document.querySelectorAll('.question--answer');
-
 var i = 0;
 
 function renderQuestion() {
@@ -93,40 +92,43 @@ function renderQuestion() {
         for (var x = 0; x < questions[i].answers.length; x++) {
             questionAnswers[x].innerHTML = (questions[i].answers[x].answer);
         }
-        i++;
     }
 }
-
 
 nextQuestionButton.addEventListener('click', renderQuestion);
 
 /*Id de la respuesta del usuario*/
+function isCorrect(question, userAnswer) {
+    if (question.id !== userAnswer.answerId) {
+        console.log('No es la misma pregunta');
+    }
+    if (question.correctAnswer.id === userAnswer.id) {
+        console.log('Es correcta!!');
+    } else {
+        console.log('Has fallado :(');
+    }
+}
+
 
 var radioAnswersList = document.querySelectorAll('.input-radio');
-function listenerEvents() {
-    for (var i = 0; i < radioAnswersList.length; i++) {
-        radioAnswersList[i].addEventListener('click', saveAnswerData);
+var userAnswerData = [];
+function saveAnswerData() {
+    for (var x = 0; x < radioAnswersList.length; x++) {
+        if (radioAnswersList[x].checked) {
+            userAnswerData.push({
+                answerId: i,
+                id: x
+            });
+
+            radioAnswersList[x].checked = false;
+
+            isCorrect(questions[i], userAnswerData[i]);
+        }
     }
+    i++;
+    renderQuestion();
 }
 
-var userAnswerId;
-var answersOptions = document.querySelectorAll('.asnwer--option');
+var sendButton = document.querySelector('.send--answer');
+sendButton.addEventListener('click', saveAnswerData);
 
-function saveAnswerData(event) {
-    var answersListId = event.currentTarget.getAttribute('data-id');
-    userAnswerId = answersListId;
-}
-
-listenerEvents();
-
-/*Evento botón enviar*/
-var sendAnswerButton = document.querySelector('.send--answer');
-
-function isCorrect(question, userAnswerId) {
-    if (questions[i].correctAnswer.id === userAnswerId) {
-        console.log('Correcto!!');
-    } else {
-        console.log('Incorrecta :(');
-    }
-}
-sendAnswerButton.addEventListener('click', isCorrect);
