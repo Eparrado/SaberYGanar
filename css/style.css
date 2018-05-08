@@ -4,3 +4,6 @@
 
 .hidden {display: none;}
 
+.answer--list {
+    list-style: none;
+}

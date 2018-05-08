@@ -19,17 +19,26 @@
     <main>
         <div class="questions__container hidden">
             <h3 class="question--title"></h3>
-            <form class="answer--list">
+            <ul class="answer--list">
                 <span class="clock"></span>
-                <input id="first-answer" type="radio" value="" name="radAnswer">
-                <label for="first-answer" class="question--answer"></label>
 
-                <input id="second-answer" type="radio" value="" name="radAnswer">
-                <label for="second-answer" class="question--answer"></label>
+                <li class="asnwer--option">
+                    <input data-id="0" type="radio" value="" name="radAnswer" class="input-radio">
+                    <label class="question--answer"></label>
+                </li>
 
-                <input id="third-answer" type="radio" value="" name="radAnswer">
-                <label for="third-answer" class="question--answer"></label>
-            </form>
+                <li class="asnwer--option">
+                    <input data-id="1" type="radio" value="" name="radAnswer" class="input-radio">
+                    <label class="question--answer"></label>
+                </li>
+
+                <li class="asnwer--option">
+                    <input data-id="2" type="radio" value="" name="radAnswer" class="input-radio">
+                    <label class="question--answer"></label>
+                </li>
+
+            </ul>
+
             <div class="right--answer"></div>
 
             <button type="button" class="send--answer">Enviar respuesta</button>
