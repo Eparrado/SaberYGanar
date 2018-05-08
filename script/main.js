@@ -1,3 +1,5 @@
+
+/*API para los datos*/
 function getQuestions(callback) {
 
     var serverData = [
@@ -50,8 +52,45 @@ getQuestions(function (data) {
     questions = data;
 });
 
+/*Temporizador*/
+var clock = document.querySelector('.clock');
+var totalTime = 20;
+var timer;
+
+function showTimeInterval() {
+    if (totalTime === 0) {
+        renderQuestion();
+        totalTime = 20;
+        setTimeout(showTimeInterval, 1000);
+    } else {
+        --totalTime;
+        timer = setTimeout(showTimeInterval, 1000);
+    }
+    clock.innerHTML = totalTime;
+}
 
 
+
+
+
+
+
+/*Botón inicio*/
+var startButton = document.querySelector('.start--button');
+var questionsContainer = document.querySelector('.questions__container');
+
+function showAndStartQuestionContainer() {
+    questionsContainer.classList.toggle('hidden');
+    startButton.classList.toggle('hidden');
+    renderQuestion();
+    showTimeInterval();
+}
+
+startButton.addEventListener('click', showAndStartQuestionContainer);
+
+
+
+/*Botón siguiente pregunta*/
 var nextQuestionButton = document.querySelector('.next--question');
 var questionTitle = document.querySelector('.question--title');
 var questionAnswers = document.querySelectorAll('.question--answer');

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/style.css">
     <title>Saber y Ganar </title>
 </head>
 
@@ -12,19 +13,22 @@
     <header>
         <h1>Saber y ganar</h1>
         <h2>Responde mejor y más rápido que los demás</h2>
+
+        <button type="button" class="start--button">Empieza a jugar</button>
     </header>
     <main>
-        <div class="questions__container">
+        <div class="questions__container hidden">
             <h3 class="question--title"></h3>
             <form class="answer--list">
-                <input type="radio">
-                <label class="question--answer"></label>
+                <span class="clock"></span>
+                <input id="first-answer" type="radio" value="" name="radAnswer">
+                <label for="first-answer" class="question--answer"></label>
 
-                <input type="radio">
-                <label class="question--answer"></label>
+                <input id="second-answer" type="radio" value="" name="radAnswer">
+                <label for="second-answer" class="question--answer"></label>
 
-                <input type="radio">
-                <label class="question--answer"></label>
+                <input id="third-answer" type="radio" value="" name="radAnswer">
+                <label for="third-answer" class="question--answer"></label>
             </form>
             <div class="right--answer"></div>
 
