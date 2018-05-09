@@ -63,12 +63,14 @@ function onStart() {
 
 function playGame() {
     renderQuestion(questions[questionsIndex]);
-    startCountdown(function () {
+    var timerId = startCountdown(function () {
         questionsIndex++;
         if (questionsIndex < questions.length) {
             renderQuestion(questions[questionsIndex]);
         } else {
+            clearInterval(timerId);
             questionsContainer.classList.add('hidden');
+            clock.classList.add('hidden');
         }
     });
 }
@@ -93,15 +95,15 @@ function renderQuestion(question) {
 
 /*Temporizador*/
 function startCountdown(onTimeOut) {
-    var initialTime = 10;
-    setInterval(function () {
+    var initialTime = 5;
+    return setInterval(function () {
         initialTime--;
         if (initialTime >= 0) {
             var clock = document.querySelector('.clock');
             clock.innerHTML = initialTime + 1;
         }
         if (initialTime === 0) {
-            initialTime = 10;
+            initialTime = 5;
             onTimeOut();
         }
     }, 1000);
