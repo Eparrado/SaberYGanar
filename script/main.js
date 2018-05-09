@@ -51,9 +51,15 @@ getQuestions(function (data) {
     questions = data;
 });
 
-/*Botón inicio*/
+
 var startButton = document.querySelector('.start--button');
 var questionsContainer = document.querySelector('.questions__container');
+var nextQuestionButton = document.querySelector('.next--question');
+var questionTitle = document.querySelector('.question--title');
+var questionAnswers = document.querySelectorAll('.question--answer');
+var radioAnswersList = document.querySelectorAll('.input-radio');
+var questionsIndex = 0;
+
 
 function onStart() {
     questionsContainer.classList.remove('hidden');
@@ -67,40 +73,32 @@ function playGame() {
         questionsIndex++;
         if (questionsIndex < questions.length) {
             renderQuestion(questions[questionsIndex]);
+
         } else {
             clearInterval(timerId);
             questionsContainer.classList.add('hidden');
+            var clock = document.querySelector('.clock');
             clock.classList.add('hidden');
         }
     });
 }
 
-startButton.addEventListener('click', onStart);
-
-/*Botón siguiente pregunta*/
-var nextQuestionButton = document.querySelector('.next--question');
-var questionTitle = document.querySelector('.question--title');
-var questionAnswers = document.querySelectorAll('.question--answer');
-var radioAnswersList = document.querySelectorAll('.input-radio');
-var questionsIndex = 0;
-
 function renderQuestion(question) {
     questionTitle.innerHTML = (question.title);
-    questionTitle.setAttribute('id', question.id);
+    questionTitle.setAttribute('data-id', question.id);
     for (var x = 0; x < question.answers.length; x++) {
         questionAnswers[x].innerHTML = question.answers[x].answer;
-        radioAnswersList[x].setAttribute('id', question.answers[x].id);
+        radioAnswersList[x].setAttribute('data-id', question.answers[x].id);
     }
 }
 
-/*Temporizador*/
 function startCountdown(onTimeOut) {
     var initialTime = 5;
     return setInterval(function () {
         initialTime--;
         if (initialTime >= 0) {
             var clock = document.querySelector('.clock');
-            clock.innerHTML = initialTime + 1;
+            clock.innerHTML = initialTime;
         }
         if (initialTime === 0) {
             initialTime = 5;
@@ -109,43 +107,41 @@ function startCountdown(onTimeOut) {
     }, 1000);
 }
 
-
-// /*Guardar y enviar respuesta del usuario*/
-// var userAnswerData = [];
-// var userAnswer;
-// function saveAnswerData() {
-//     for (var x = 0; x < radioAnswersList.length; x++) {
-//         if (radioAnswersList[x].checked) {
-//             userAnswer = radioAnswersList[x];
-
-//             radioAnswersList[x].checked = false;
-
-//             isCorrect(questions[i], userAnswer[i]);
-//         }
-//     }
-// }
-
-// var resultContainer = document.querySelector('.right--answer');
-// function isCorrect(question, userAnswer) {
-//     nextQuestionButton.classList.remove('hidden');
-//     sendButton.classList.add('hidden');
-
-//     if (question.id !== userAnswer.answerId) {
-//         resultContainer.innerHTML = 'No es la misma pregunta';
-//     }
-//     if (question.correctAnswer.id === userAnswer.id) {
-//         resultContainer.innerHTML = 'Es correcta!!';
-//     } else {
-//         resultContainer.innerHTML = 'Has fallado :(';
-//     }
-// }
+startButton.addEventListener('click', onStart);
 
 
-// function sendAnswerData() {
-//     saveAnswerData();
-//     i++;
-// }
 
-// var sendButton = document.querySelector('.send--answer');
-// sendButton.addEventListener('click', sendAnswerData);
+
+
+function checkUserAnswer() {
+    var questionAnswers = document.querySelectorAll('.question--answer');
+    var questionTitle = document.querySelector('.question--title');
+    var userAnswer;
+    var currentQuestion = questions.find(getCurrentQuestion);
+    for (var x = 0; x < radioAnswersList.length; x++) {
+        if (radioAnswersList[x].checked) {
+            userAnswer = radioAnswersList[x].getAttribute('data-id');
+
+            radioAnswersList[x].checked = false;
+            compareAnswers(currentQuestion.correctAnswer.id, userAnswer);
+        }
+    }
+}
+
+function getCurrentQuestion(question) {
+    if (question.id == questionTitle.getAttribute('data-id')) {
+        return question;
+    }
+}
+
+function compareAnswers(correctAnswer, userAnswer) {
+    if (correctAnswer == userAnswer) {
+        console.log('OK');
+    } else {
+        console.log('NOPE');
+    }
+}
+
+var sendButton = document.querySelector('.send--answer');
+sendButton.addEventListener('click', checkUserAnswer);
 
