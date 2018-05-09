@@ -5,16 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Pacifico|Signika:400,600,700" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <title>Saber y Ganar </title>
 </head>
 
 <body>
     <header>
-        <h1>Saber y ganar</h1>
-        <h2>Responde mejor y más rápido que los demás</h2>
+        <h1 class="page--title">Saber y ganar</h1>
+        <h2 class="page--subtitle">Responde mejor y más rápido que los demás</h2>
 
         <button type="button" class="start--button">Empieza a jugar</button>
+        <span class="clock"></span>
     </header>
     <main>
         <div class="questions__container hidden">
@@ -23,17 +25,17 @@
                 <span class="clock"></span>
 
                 <li class="asnwer--option">
-                    <input data-id="0" type="radio" value="" name="radAnswer" class="input-radio">
+                    <input type="radio" value="" name="radAnswer" class="input-radio">
                     <label class="question--answer"></label>
                 </li>
 
                 <li class="asnwer--option">
-                    <input data-id="1" type="radio" value="" name="radAnswer" class="input-radio">
+                    <input type="radio" value="" name="radAnswer" class="input-radio">
                     <label class="question--answer"></label>
                 </li>
 
                 <li class="asnwer--option">
-                    <input data-id="2" type="radio" value="" name="radAnswer" class="input-radio">
+                    <input type="radio" value="" name="radAnswer" class="input-radio">
                     <label class="question--answer"></label>
                 </li>
 
@@ -42,7 +44,7 @@
             <div class="right--answer"></div>
 
             <button type="button" class="send--answer">Enviar respuesta</button>
-            <button type="button" class="next--question">Siguiente pregunta</button>
+            <button type="button" class="next--question hidden">Siguiente pregunta</button>
         </div>
 
         <div class="scores__container"></div>
