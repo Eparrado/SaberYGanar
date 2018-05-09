@@ -62,10 +62,14 @@ function onStart() {
 }
 
 function playGame() {
-    renderQuestion();
+    renderQuestion(questions[questionsIndex]);
     startCountdown(function () {
         questionsIndex++;
-        renderQuestion();
+        if (questionsIndex < questions.length) {
+            renderQuestion(questions[questionsIndex]);
+        } else {
+            questionsContainer.classList.add('hidden');
+        }
     });
 }
 
@@ -78,18 +82,12 @@ var questionAnswers = document.querySelectorAll('.question--answer');
 var radioAnswersList = document.querySelectorAll('.input-radio');
 var questionsIndex = 0;
 
-function renderQuestion() {
-    questionsContainer.classList.remove('hidden');
-    nextQuestionButton.classList.add('hidden');
-    if (questionsIndex < questions.length) {
-        questionTitle.innerHTML = (questions[questionsIndex].title);
-        questionTitle.setAttribute('id', questions[questionsIndex].id);
-        for (var x = 0; x < questions[questionsIndex].answers.length; x++) {
-            questionAnswers[x].innerHTML = (questions[questionsIndex].answers[x].answer);
-            radioAnswersList[x].setAttribute('id', questions[questionsIndex].answers[x].id);
-        }
-    } else {
-        questionsContainer.classList.toggle('hidden');
+function renderQuestion(question) {
+    questionTitle.innerHTML = (question.title);
+    questionTitle.setAttribute('id', question.id);
+    for (var x = 0; x < question.answers.length; x++) {
+        questionAnswers[x].innerHTML = question.answers[x].answer;
+        radioAnswersList[x].setAttribute('id', question.answers[x].id);
     }
 }
 
