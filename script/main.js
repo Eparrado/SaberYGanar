@@ -58,6 +58,7 @@ var nextQuestionButton = document.querySelector('.next--question');
 var questionTitle = document.querySelector('.question--title');
 var questionAnswers = document.querySelectorAll('.question--answer');
 var radioAnswersList = document.querySelectorAll('.input-radio');
+var resultContainer = document.querySelector('.right--answer');
 var questionsIndex = 0;
 
 
@@ -136,9 +137,9 @@ function getCurrentQuestion(question) {
 
 function compareAnswers(correctAnswer, userAnswer) {
     if (correctAnswer == userAnswer) {
-        console.log('OK');
+        resultContainer.innerHTML = 'Has acertado!';
     } else {
-        console.log('NOPE');
+        resultContainer.innerHTML = 'Has fallado!';
     }
 }
 
