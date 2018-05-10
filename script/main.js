@@ -106,7 +106,6 @@ function hideResultContainer() {
 
 function onNextQuestion() {
     questionsIndex++;
-    stopCountDown();
     playGame();
     hideResultContainer();
 }
@@ -128,17 +127,17 @@ function startCountdown(onTimeOut) {
 
 function stopCountDown() {
     clearInterval(timerId);
-    initialTime = 0;
-    clock.innerHTML = initialTime;
+    clock.innerHTML = '-';
 }
 
 startButton.addEventListener('click', onStart);
 
+var currentQuestion;
 function checkUserAnswer() {
     var questionAnswers = document.querySelectorAll('.question--answer');
     var questionTitle = document.querySelector('.question--title');
     var userAnswer;
-    var currentQuestion = questions.find(getCurrentQuestion);
+    getCurrentQuestion();
     for (var x = 0; x < radioAnswersList.length; x++) {
         if (radioAnswersList[x].checked) {
             userAnswer = radioAnswersList[x].getAttribute('data-id');
@@ -149,10 +148,13 @@ function checkUserAnswer() {
     }
 }
 
-function getCurrentQuestion(question) {
-    if (question.id == questionTitle.getAttribute('data-id')) {
-        return question;
-    }
+function getCurrentQuestion() {
+    currentQuestion = questions.find(function (question) {
+        if (question.id == questionTitle.getAttribute('data-id')) {
+            return question;
+        }
+    });
+    return currentQuestion;
 }
 
 function compareAnswers(correctAnswer, userAnswer) {
@@ -164,9 +166,20 @@ function compareAnswers(correctAnswer, userAnswer) {
     resultContainer.classList.remove('hidden');
 }
 
+function onCheckAnswer() {
+    stopCountDown();
+    getCurrentQuestion();
+    if (currentQuestion.id < questions.length) {
+        checkUserAnswer();
+    } else {
+        nextQuestionButton.classList.add('hidden');
+        console.log('Has terminado el juego. Puntuación: blabla');
+    }
+}
+
 function eventListenerRadioCheck() {
     radioAnswersList.forEach(function (radio) {
-        radio.addEventListener('click', checkUserAnswer);
+        radio.addEventListener('click', onCheckAnswer);
     });
 }
 
