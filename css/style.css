@@ -20,6 +20,6 @@ html {
 .answer--list {
     list-style: none;
 }
-
+.answer--selected {color:burlywood;}
 /*clases landing page*/
 

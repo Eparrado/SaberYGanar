@@ -13,11 +13,17 @@
 <body>
     <header>
         <h1 class="page--title">Saber y ganar</h1>
-        <h2 class="page--subtitle">Responde mejor y más rápido que los demás</h2>
+        <h2 class="page--subtitle">Todo es empezar</h2>
+        <ul>
+            <li>Tienes 20 segundos para responder cada pregunta.</li>
+            <li>La puntuación depende del tiempo que tardes en contestar</li>
+            <li>Las respuestas incorrectas y las preguntas que no se respondan restan puntos</li>
+            <p>je je je je je je je je</p>
+        </ul>
 
         <button type="button" class="start--button">Empieza a jugar</button>
-        <span class="clock"></span>
     </header>
+
     <main>
         <div class="questions__container hidden">
             <h3 class="question--title"></h3>
@@ -40,11 +46,13 @@
                 </li>
 
             </ul>
+            <p>Selecciona la respuesta que creas correcta</p>
 
-            <div class="right--answer"></div>
-
-            <button type="button" class="send--answer">Enviar respuesta</button>
-            <button type="button" class="next--question hidden">Siguiente pregunta</button>
+            <div class="result--container hidden">
+                <h3 class="result--title"></h3>
+                <h3 class="result--score"></h3>
+                <button class="next--question--button">Pasa a la siguiente pregunta</button>
+            </div>
         </div>
 
         <div class="scores__container"></div>

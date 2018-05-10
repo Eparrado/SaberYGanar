@@ -53,24 +53,30 @@ getQuestions(function (data) {
 
 
 var startButton = document.querySelector('.start--button');
+var clock = document.querySelector('.clock');
 var questionsContainer = document.querySelector('.questions__container');
-var nextQuestionButton = document.querySelector('.next--question');
+var nextQuestionButton = document.querySelector('.next--question--button');
 var questionTitle = document.querySelector('.question--title');
 var questionAnswers = document.querySelectorAll('.question--answer');
 var radioAnswersList = document.querySelectorAll('.input-radio');
-var resultContainer = document.querySelector('.right--answer');
+var resultContainer = document.querySelector('.result--container');
+var resultTitle = document.querySelector('.result--title');
+var resultScore = document.querySelector('.result-score');
 var questionsIndex = 0;
+var timerId;
+var initialTime;
 
 
 function onStart() {
     questionsContainer.classList.remove('hidden');
     startButton.classList.add('hidden');
     playGame();
+    eventListenerRadioCheck();
 }
 
 function playGame() {
     renderQuestion(questions[questionsIndex]);
-    var timerId = startCountdown(function () {
+    timerId = startCountdown(function () {
         questionsIndex++;
         if (questionsIndex < questions.length) {
             renderQuestion(questions[questionsIndex]);
@@ -91,10 +97,29 @@ function renderQuestion(question) {
         questionAnswers[x].innerHTML = question.answers[x].answer;
         radioAnswersList[x].setAttribute('data-id', question.answers[x].id);
     }
+    resultContainer.classList.add('hidden');
+}
+
+function renderNextQuestion() {
+    stopCountDown();
+    startCountdown(function () {
+        questionsIndex++;
+        if (questionsIndex < questions.length) {
+            renderQuestion(questions[questionsIndex]);
+
+        } else {
+            clearInterval(timerId);
+            questionsContainer.classList.add('hidden');
+            var clock = document.querySelector('.clock');
+            clock.classList.add('hidden');
+        }
+    });
+
+    resultContainer.classList.add('hidden');
 }
 
 function startCountdown(onTimeOut) {
-    var initialTime = 5;
+    initialTime = 5;
     return setInterval(function () {
         initialTime--;
         if (initialTime >= 0) {
@@ -108,11 +133,13 @@ function startCountdown(onTimeOut) {
     }, 1000);
 }
 
+function stopCountDown() {
+    clearInterval(timerId);
+    initialTime = 0;
+    clock.innerHTML = initialTime;
+}
+
 startButton.addEventListener('click', onStart);
-
-
-
-
 
 function checkUserAnswer() {
     var questionAnswers = document.querySelectorAll('.question--answer');
@@ -122,10 +149,10 @@ function checkUserAnswer() {
     for (var x = 0; x < radioAnswersList.length; x++) {
         if (radioAnswersList[x].checked) {
             userAnswer = radioAnswersList[x].getAttribute('data-id');
-
-            radioAnswersList[x].checked = false;
+            questionAnswers[x].classList.toggle('answer--selected');
             compareAnswers(currentQuestion.correctAnswer.id, userAnswer);
         }
+        radioAnswersList[x].checked = false;
     }
 }
 
@@ -137,12 +164,17 @@ function getCurrentQuestion(question) {
 
 function compareAnswers(correctAnswer, userAnswer) {
     if (correctAnswer == userAnswer) {
-        resultContainer.innerHTML = 'Has acertado!';
+        resultTitle.innerHTML = 'Has acertado!';
     } else {
-        resultContainer.innerHTML = 'Has fallado!';
+        resultTitle.innerHTML = 'Has fallado!';
     }
+    resultContainer.classList.remove('hidden');
 }
 
-var sendButton = document.querySelector('.send--answer');
-sendButton.addEventListener('click', checkUserAnswer);
+function eventListenerRadioCheck() {
+    radioAnswersList.forEach(function (radio) {
+        radio.addEventListener('click', checkUserAnswer);
+    });
+}
 
+nextQuestionButton.addEventListener('click', renderNextQuestion);
