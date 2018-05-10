@@ -110,8 +110,10 @@ function renderQuestion(question) {
 
 function onNextQuestion() {
     questionsIndex++;
-    playGame();
-    hideResultContainer();
+    if (questionsIndex < questions.length) {
+        playGame();
+        hideResultContainer();
+    }
 }
 
 function startCountdown(onTimeOut) {
@@ -172,13 +174,7 @@ function compareAnswers(correctAnswer, userAnswer) {
 
 function onCheckAnswer() {
     stopCountDown();
-    getCurrentQuestion();
-    if (currentQuestion.id < questions.length) {
-        checkUserAnswer();
-    } else {
-        nextQuestionButton.classList.add('hidden');
-        console.log('Has terminado el juego. Puntuación: blabla');
-    }
+    checkUserAnswer();
 }
 
 function eventListenerRadioCheck() {
