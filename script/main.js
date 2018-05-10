@@ -51,130 +51,97 @@ getQuestions(function (data) {
     questions = data;
 });
 
-
+/*Botón inicio*/
 var startButton = document.querySelector('.start--button');
-var clock = document.querySelector('.clock');
 var questionsContainer = document.querySelector('.questions__container');
-var nextQuestionButton = document.querySelector('.next--question--button');
+
+function showAndStartQuestionContainer() {
+    questionsContainer.classList.toggle('hidden');
+    startButton.classList.toggle('hidden');
+    renderQuestion();
+}
+
+startButton.addEventListener('click', renderQuestion);
+
+/*Botón siguiente pregunta*/
+var nextQuestionButton = document.querySelector('.next--question');
 var questionTitle = document.querySelector('.question--title');
 var questionAnswers = document.querySelectorAll('.question--answer');
 var radioAnswersList = document.querySelectorAll('.input-radio');
-var resultContainer = document.querySelector('.result--container');
-var resultTitle = document.querySelector('.result--title');
-var resultScore = document.querySelector('.result-score');
 var questionsIndex = 0;
-var timerId;
-var initialTime;
 
-
-function onStart() {
+function renderQuestion() {
+    startCountdown();
     questionsContainer.classList.remove('hidden');
-    startButton.classList.add('hidden');
-    playGame();
-    eventListenerRadioCheck();
-}
-
-function playGame() {
-    renderQuestion(questions[questionsIndex]);
-    timerId = startCountdown(function () {
-        questionsIndex++;
-        if (questionsIndex < questions.length) {
-            renderQuestion(questions[questionsIndex]);
-
-        } else {
-            clearInterval(timerId);
-            questionsContainer.classList.add('hidden');
-            var clock = document.querySelector('.clock');
-            clock.classList.add('hidden');
+    nextQuestionButton.classList.add('hidden');
+    if (questionsIndex < questions.length) {
+        questionTitle.innerHTML = (questions[questionsIndex].title);
+        questionTitle.setAttribute('id', questions[questionsIndex].id);
+        for (var x = 0; x < questions[questionsIndex].answers.length; x++) {
+            questionAnswers[x].innerHTML = (questions[questionsIndex].answers[x].answer);
+            radioAnswersList[x].setAttribute('id', questions[questionsIndex].answers[x].id);
         }
-    });
-}
-
-function renderQuestion(question) {
-    questionTitle.innerHTML = (question.title);
-    questionTitle.setAttribute('data-id', question.id);
-    for (var x = 0; x < question.answers.length; x++) {
-        questionAnswers[x].innerHTML = question.answers[x].answer;
-        radioAnswersList[x].setAttribute('data-id', question.answers[x].id);
+    } else {
+        questionsContainer.classList.toggle('hidden');
     }
-    resultContainer.classList.add('hidden');
 }
 
-function renderNextQuestion() {
-    stopCountDown();
-    startCountdown(function () {
-        questionsIndex++;
-        if (questionsIndex < questions.length) {
-            renderQuestion(questions[questionsIndex]);
+nextQuestionButton.addEventListener('click', renderQuestion);
 
-        } else {
-            clearInterval(timerId);
-            questionsContainer.classList.add('hidden');
-            var clock = document.querySelector('.clock');
-            clock.classList.add('hidden');
-        }
-    });
-
-    resultContainer.classList.add('hidden');
-}
-
-function startCountdown(onTimeOut) {
-    initialTime = 5;
-    return setInterval(function () {
+/*Temporizador*/
+function startCountdown() {
+    var initialTime = 10;
+    setInterval(function () {
         initialTime--;
         if (initialTime >= 0) {
             var clock = document.querySelector('.clock');
             clock.innerHTML = initialTime;
         }
         if (initialTime === 0) {
-            initialTime = 5;
-            onTimeOut();
+            clearInterval(initialTime);
+            questionsIndex++;
+            renderQuestion();
         }
     }, 1000);
 }
 
-function stopCountDown() {
-    clearInterval(timerId);
-    initialTime = 0;
-    clock.innerHTML = initialTime;
-}
 
-startButton.addEventListener('click', onStart);
+// /*Guardar y enviar respuesta del usuario*/
+// var userAnswerData = [];
+// var userAnswer;
+// function saveAnswerData() {
+//     for (var x = 0; x < radioAnswersList.length; x++) {
+//         if (radioAnswersList[x].checked) {
+//             userAnswer = radioAnswersList[x];
 
-function checkUserAnswer() {
-    var questionAnswers = document.querySelectorAll('.question--answer');
-    var questionTitle = document.querySelector('.question--title');
-    var userAnswer;
-    var currentQuestion = questions.find(getCurrentQuestion);
-    for (var x = 0; x < radioAnswersList.length; x++) {
-        if (radioAnswersList[x].checked) {
-            userAnswer = radioAnswersList[x].getAttribute('data-id');
-            questionAnswers[x].classList.toggle('answer--selected');
-            compareAnswers(currentQuestion.correctAnswer.id, userAnswer);
-        }
-        radioAnswersList[x].checked = false;
-    }
-}
+//             radioAnswersList[x].checked = false;
 
-function getCurrentQuestion(question) {
-    if (question.id == questionTitle.getAttribute('data-id')) {
-        return question;
-    }
-}
+//             isCorrect(questions[i], userAnswer[i]);
+//         }
+//     }
+// }
 
-function compareAnswers(correctAnswer, userAnswer) {
-    if (correctAnswer == userAnswer) {
-        resultTitle.innerHTML = 'Has acertado!';
-    } else {
-        resultTitle.innerHTML = 'Has fallado!';
-    }
-    resultContainer.classList.remove('hidden');
-}
+// var resultContainer = document.querySelector('.right--answer');
+// function isCorrect(question, userAnswer) {
+//     nextQuestionButton.classList.remove('hidden');
+//     sendButton.classList.add('hidden');
 
-function eventListenerRadioCheck() {
-    radioAnswersList.forEach(function (radio) {
-        radio.addEventListener('click', checkUserAnswer);
-    });
-}
+//     if (question.id !== userAnswer.answerId) {
+//         resultContainer.innerHTML = 'No es la misma pregunta';
+//     }
+//     if (question.correctAnswer.id === userAnswer.id) {
+//         resultContainer.innerHTML = 'Es correcta!!';
+//     } else {
+//         resultContainer.innerHTML = 'Has fallado :(';
+//     }
+// }
 
-nextQuestionButton.addEventListener('click', renderNextQuestion);
+
+// function sendAnswerData() {
+//     saveAnswerData();
+//     i++;
+// }
+
+// var sendButton = document.querySelector('.send--answer');
+// sendButton.addEventListener('click', sendAnswerData);
+
