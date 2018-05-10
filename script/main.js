@@ -83,11 +83,18 @@ function playGame() {
 
         } else {
             clearInterval(timerId);
-            questionsContainer.classList.add('hidden');
-            var clock = document.querySelector('.clock');
-            clock.classList.add('hidden');
+            hideResultContainer();
+            hideClock();
         }
     });
+}
+
+function hideResultContainer() {
+    resultContainer.classList.add('hidden');
+}
+
+function hideClock() {
+    clock.classList.add('hidden');
 }
 
 function renderQuestion(question) {
@@ -100,9 +107,6 @@ function renderQuestion(question) {
     hideResultContainer();
 }
 
-function hideResultContainer() {
-    resultContainer.classList.add('hidden');
-}
 
 function onNextQuestion() {
     questionsIndex++;
@@ -111,15 +115,15 @@ function onNextQuestion() {
 }
 
 function startCountdown(onTimeOut) {
-    initialTime = 5;
+    initialTime = 21;
     return setInterval(function () {
         initialTime--;
         if (initialTime >= 0) {
             var clock = document.querySelector('.clock');
-            clock.innerHTML = initialTime;
+            clock.innerHTML = 'Tiempo: ' + initialTime + ' segundos';
         }
         if (initialTime === 0) {
-            initialTime = 5;
+            initialTime = 21;
             onTimeOut();
         }
     }, 1000);
@@ -127,7 +131,7 @@ function startCountdown(onTimeOut) {
 
 function stopCountDown() {
     clearInterval(timerId);
-    clock.innerHTML = '-';
+    clock.innerHTML = 'Tiempo: -';
 }
 
 startButton.addEventListener('click', onStart);
