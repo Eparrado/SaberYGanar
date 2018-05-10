@@ -97,25 +97,18 @@ function renderQuestion(question) {
         questionAnswers[x].innerHTML = question.answers[x].answer;
         radioAnswersList[x].setAttribute('data-id', question.answers[x].id);
     }
+    hideResultContainer();
+}
+
+function hideResultContainer() {
     resultContainer.classList.add('hidden');
 }
 
-function renderNextQuestion() {
+function onNextQuestion() {
+    questionsIndex++;
     stopCountDown();
-    startCountdown(function () {
-        questionsIndex++;
-        if (questionsIndex < questions.length) {
-            renderQuestion(questions[questionsIndex]);
-
-        } else {
-            clearInterval(timerId);
-            questionsContainer.classList.add('hidden');
-            var clock = document.querySelector('.clock');
-            clock.classList.add('hidden');
-        }
-    });
-
-    resultContainer.classList.add('hidden');
+    playGame();
+    hideResultContainer();
 }
 
 function startCountdown(onTimeOut) {
@@ -177,4 +170,4 @@ function eventListenerRadioCheck() {
     });
 }
 
-nextQuestionButton.addEventListener('click', renderNextQuestion);
+nextQuestionButton.addEventListener('click', onNextQuestion);
