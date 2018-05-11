@@ -112,10 +112,9 @@ function onCheckAnswer() {
 function playGame() {
     renderQuestion(questions[questionsIndex]);
     timerId = startCountdown(function () {
-        // updateQuestionIndex();
         if (questionsIndex < questions.length) {
-            // renderQuestion(questions[questionsIndex]);
-            showResultContainerOnTimeout();
+            showResultContainer();
+            updatePointsWithoutAnswer();
             stopCountDown();
 
         } else {
@@ -142,12 +141,6 @@ function showResultContainer() {
     resultContainer.classList.remove('hidden');
 }
 
-function showResultContainerOnTimeout() {
-    getPointsWithoutAnswer();
-    resultContainer.classList.remove('hidden');
-    resultTitle.innerHTML = 'Oh vaya! Se te ha terminado el tiempo';
-    resultScore.innerHTML = 'Puntuación: ' + pointsCounter;
-}
 
 function showQuestionContainer() {
     questionsContainer.classList.remove('hidden');
@@ -237,12 +230,12 @@ var pointsCounter = 0;
 var seconds;
 function compareAnswers(correctAnswer, userAnswer) {
     if (correctAnswer == userAnswer) {
-        getPointsWithCorrectAnswer();
+        updatePointsWithCorrectAnswer();
         resultTitle.innerHTML = 'Has acertado!';
         resultScore.innerHTML = 'Puntuación: ' + pointsCounter;
 
     } else if (correctAnswer != userAnswer) {
-        getPointsWithInorrectAnswer();
+        updatePointsWithInorrectAnswer();
         resultTitle.innerHTML = 'Has fallado!';
         resultScore.innerHTML = 'Puntuación: ' + pointsCounter;
 
@@ -255,7 +248,7 @@ function getAnswerTime() {
     seconds = (initialTime - currentTime);
 }
 
-function getPointsWithCorrectAnswer() {
+function updatePointsWithCorrectAnswer() {
     getAnswerTime();
     if (seconds <= 2) {
         pointsCounter = pointsCounter + 2;
@@ -266,7 +259,7 @@ function getPointsWithCorrectAnswer() {
     }
 }
 
-function getPointsWithInorrectAnswer() {
+function updatePointsWithInorrectAnswer() {
     getAnswerTime();
     if (seconds <= 10) {
         pointsCounter = pointsCounter - 1;
@@ -276,8 +269,10 @@ function getPointsWithInorrectAnswer() {
     }
 }
 
-function getPointsWithoutAnswer() {
+function updatePointsWithoutAnswer() {
     pointsCounter = pointsCounter - 3;
+    resultTitle.innerHTML = 'Oh vaya! Se te ha terminado el tiempo';
+    resultScore.innerHTML = 'Puntuación: ' + pointsCounter;
 }
 
 function resetPointsCounter() {
