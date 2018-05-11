@@ -61,11 +61,11 @@ var questionAnswers = document.querySelectorAll('.question--answer');
 var radioAnswersList = document.querySelectorAll('.input-radio');
 var resultContainer = document.querySelector('.result--container');
 var resultScore = document.querySelector('.result--score');
-var resultTitle = document.querySelector('.result--score');
+var resultTitle = document.querySelector('.result--title');
 var introductionContainer = document.querySelector('.page--introduction');
 var questionsIndex = 0;
 var timerId;
-var initialTime = 21;
+var initialTime = 5;
 var currentTime;
 startButton.addEventListener('click', onStart);
 var currentQuestion;
@@ -112,9 +112,11 @@ function onCheckAnswer() {
 function playGame() {
     renderQuestion(questions[questionsIndex]);
     timerId = startCountdown(function () {
-        updateQuestionIndex();
+        // updateQuestionIndex();
         if (questionsIndex < questions.length) {
-            renderQuestion(questions[questionsIndex]);
+            // renderQuestion(questions[questionsIndex]);
+            showResultContainerOnTimeout();
+            stopCountDown();
 
         } else {
             clearInterval(timerId);
@@ -138,6 +140,13 @@ function hideResultContainer() {
 
 function showResultContainer() {
     resultContainer.classList.remove('hidden');
+}
+
+function showResultContainerOnTimeout() {
+    getPointsWithoutAnswer();
+    resultContainer.classList.remove('hidden');
+    resultTitle.innerHTML = 'Oh vaya! Se te ha terminado el tiempo';
+    resultScore.innerHTML = 'Puntuación: ' + pointsCounter;
 }
 
 function showQuestionContainer() {
@@ -232,7 +241,7 @@ function compareAnswers(correctAnswer, userAnswer) {
         resultTitle.innerHTML = 'Has acertado!';
         resultScore.innerHTML = 'Puntuación: ' + pointsCounter;
 
-    } else {
+    } else if (correctAnswer != userAnswer) {
         getPointsWithInorrectAnswer();
         resultTitle.innerHTML = 'Has fallado!';
         resultScore.innerHTML = 'Puntuación: ' + pointsCounter;
@@ -265,6 +274,10 @@ function getPointsWithInorrectAnswer() {
     if (seconds > 10) {
         pointsCounter = pointsCounter - 2;
     }
+}
+
+function getPointsWithoutAnswer() {
+    pointsCounter = pointsCounter - 3;
 }
 
 function resetPointsCounter() {
