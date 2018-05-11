@@ -60,18 +60,20 @@ var questionTitle = document.querySelector('.question--title');
 var questionAnswers = document.querySelectorAll('.question--answer');
 var radioAnswersList = document.querySelectorAll('.input-radio');
 var resultContainer = document.querySelector('.result--container');
-var resultTitle = document.querySelector('.result--title');
-var resultScore = document.querySelector('.result-score');
+var resultScore = document.querySelector('.result--score');
+var resultTitle = document.querySelector('.result--score');
 var introductionContainer = document.querySelector('.page--introduction');
 var questionsIndex = 0;
 var timerId;
-var initialTime;
+var initialTime = 21;
+var currentTime;
 startButton.addEventListener('click', onStart);
 var currentQuestion;
 nextQuestionButton.addEventListener('click', onNextQuestion);
 var finalPage = document.querySelector('.page--section');
 var startAgainButton = document.querySelector('.replay--button');
 startAgainButton.addEventListener('click', onStartAgain);
+var finalScoreContainer = document.querySelector('.final--result');
 
 
 function onStart() {
@@ -87,6 +89,7 @@ function onStartAgain() {
     resetQuestionIndex();
     playGame();
     eventListenerRadioCheck();
+    resetPointsCounter();
 }
 
 function onNextQuestion() {
@@ -133,6 +136,10 @@ function hideResultContainer() {
     resultContainer.classList.add('hidden');
 }
 
+function showResultContainer() {
+    resultContainer.classList.remove('hidden');
+}
+
 function showQuestionContainer() {
     questionsContainer.classList.remove('hidden');
 }
@@ -151,15 +158,15 @@ function hideFinalPage() {
 
 
 function startCountdown(onTimeOut) {
-    initialTime = 21;
+    currentTime = initialTime;
     return setInterval(function () {
-        initialTime--;
-        if (initialTime >= 0) {
+        currentTime--;
+        if (currentTime >= 0) {
             var clock = document.querySelector('.clock');
-            clock.innerHTML = 'Tiempo: ' + initialTime + ' segundos';
+            clock.innerHTML = 'Tiempo: ' + currentTime + ' segundos';
         }
-        else if (initialTime < 0) {
-            initialTime = 21;
+        else if (currentTime < 0) {
+            currentTime = initialTime;
             onTimeOut();
         }
     }, 1000);
@@ -217,14 +224,49 @@ function getCurrentQuestion() {
     return currentQuestion;
 }
 
+var pointsCounter = 0;
+var seconds;
 function compareAnswers(correctAnswer, userAnswer) {
     if (correctAnswer == userAnswer) {
+        getPointsWithCorrectAnswer();
         resultTitle.innerHTML = 'Has acertado!';
+        resultScore.innerHTML = 'Puntuación: ' + pointsCounter;
+
     } else {
+        getPointsWithInorrectAnswer();
         resultTitle.innerHTML = 'Has fallado!';
+        resultScore.innerHTML = 'Puntuación: ' + pointsCounter;
+
     }
-    resultContainer.classList.remove('hidden');
+    showResultContainer();
+    finalScoreContainer.innerHTML = 'Has conseguido ' + pointsCounter + ' puntos';
 }
 
+function getAnswerTime() {
+    seconds = (initialTime - currentTime);
+}
 
+function getPointsWithCorrectAnswer() {
+    getAnswerTime();
+    if (seconds <= 2) {
+        pointsCounter = pointsCounter + 2;
+    } else if (seconds <= 10) {
+        pointsCounter = pointsCounter + 1;
+    } else if (seconds > 10) {
+        return pointsCounter;
+    }
+}
 
+function getPointsWithInorrectAnswer() {
+    getAnswerTime();
+    if (seconds <= 10) {
+        pointsCounter = pointsCounter - 1;
+    }
+    if (seconds > 10) {
+        pointsCounter = pointsCounter - 2;
+    }
+}
+
+function resetPointsCounter() {
+    pointsCounter = 0;
+}
