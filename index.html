@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <header>
+    <header class="page--introduction">
         <h1 class="page--title">Saber y ganar</h1>
         <h2 class="page--subtitle">Todo es empezar</h2>
         <ul>
@@ -25,7 +25,7 @@
     </header>
 
     <main>
-        <div class="questions__container hidden">
+        <div class="questions--container hidden">
             <h3 class="question--title"></h3>
             <ul class="answer--list">
                 <span class="clock">Tiempo</span>
@@ -54,10 +54,13 @@
                 <button class="next--question--button">Pasa a la siguiente pregunta</button>
             </div>
         </div>
-
-        <div class="scores__container"></div>
-        <div class="statistics__container"></div>
     </main>
+
+    <section class="page--section hidden">
+        <h3 class="section-title">Has terminado el juego!</h3>
+        <h3 class="final--result"></h3>
+        <button class="replay--button">Volver a jugar</button>
+    </section>
 
     <script src="script/main.js"></script>
 </body>

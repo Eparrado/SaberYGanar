@@ -54,7 +54,7 @@ getQuestions(function (data) {
 
 var startButton = document.querySelector('.start--button');
 var clock = document.querySelector('.clock');
-var questionsContainer = document.querySelector('.questions__container');
+var questionsContainer = document.querySelector('.questions--container');
 var nextQuestionButton = document.querySelector('.next--question--button');
 var questionTitle = document.querySelector('.question--title');
 var questionAnswers = document.querySelectorAll('.question--answer');
@@ -62,22 +62,54 @@ var radioAnswersList = document.querySelectorAll('.input-radio');
 var resultContainer = document.querySelector('.result--container');
 var resultTitle = document.querySelector('.result--title');
 var resultScore = document.querySelector('.result-score');
+var introductionContainer = document.querySelector('.page--introduction');
 var questionsIndex = 0;
 var timerId;
 var initialTime;
+startButton.addEventListener('click', onStart);
+var currentQuestion;
+nextQuestionButton.addEventListener('click', onNextQuestion);
+var finalPage = document.querySelector('.page--section');
+var startAgainButton = document.querySelector('.replay--button');
+startAgainButton.addEventListener('click', onStartAgain);
 
 
 function onStart() {
-    questionsContainer.classList.remove('hidden');
-    startButton.classList.add('hidden');
+    hideIntroductionContainer();
+    showQuestionContainer();
     playGame();
     eventListenerRadioCheck();
+}
+
+function onStartAgain() {
+    hideFinalPage();
+    showQuestionContainer();
+    resetQuestionIndex();
+    playGame();
+    eventListenerRadioCheck();
+}
+
+function onNextQuestion() {
+    updateQuestionIndex();
+    if (questionsIndex < questions.length) {
+        playGame();
+        hideResultContainer();
+    } else {
+        hideResultContainer();
+        hideQuestionContainer();
+        showFinalPage();
+    }
+}
+
+function onCheckAnswer() {
+    stopCountDown();
+    checkUserAnswer();
 }
 
 function playGame() {
     renderQuestion(questions[questionsIndex]);
     timerId = startCountdown(function () {
-        questionsIndex++;
+        updateQuestionIndex();
         if (questionsIndex < questions.length) {
             renderQuestion(questions[questionsIndex]);
 
@@ -89,32 +121,34 @@ function playGame() {
     });
 }
 
-function hideResultContainer() {
-    resultContainer.classList.add('hidden');
+function hideIntroductionContainer() {
+    introductionContainer.classList.add('hidden');
 }
 
 function hideClock() {
     clock.classList.add('hidden');
 }
 
-function renderQuestion(question) {
-    questionTitle.innerHTML = (question.title);
-    questionTitle.setAttribute('data-id', question.id);
-    for (var x = 0; x < question.answers.length; x++) {
-        questionAnswers[x].innerHTML = question.answers[x].answer;
-        radioAnswersList[x].setAttribute('data-id', question.answers[x].id);
-    }
-    hideResultContainer();
+function hideResultContainer() {
+    resultContainer.classList.add('hidden');
 }
 
-
-function onNextQuestion() {
-    questionsIndex++;
-    if (questionsIndex < questions.length) {
-        playGame();
-        hideResultContainer();
-    }
+function showQuestionContainer() {
+    questionsContainer.classList.remove('hidden');
 }
+
+function hideQuestionContainer() {
+    questionsContainer.classList.add('hidden');
+}
+
+function showFinalPage() {
+    finalPage.classList.remove('hidden');
+}
+
+function hideFinalPage() {
+    finalPage.classList.add('hidden');
+}
+
 
 function startCountdown(onTimeOut) {
     initialTime = 21;
@@ -124,7 +158,7 @@ function startCountdown(onTimeOut) {
             var clock = document.querySelector('.clock');
             clock.innerHTML = 'Tiempo: ' + initialTime + ' segundos';
         }
-        if (initialTime === 0) {
+        else if (initialTime < 0) {
             initialTime = 21;
             onTimeOut();
         }
@@ -136,9 +170,29 @@ function stopCountDown() {
     clock.innerHTML = 'Tiempo: -';
 }
 
-startButton.addEventListener('click', onStart);
+function updateQuestionIndex() {
+    questionsIndex++;
+}
 
-var currentQuestion;
+function resetQuestionIndex() {
+    return questionsIndex = 0;
+}
+
+function renderQuestion(question) {
+    questionTitle.innerHTML = (question.title);
+    questionTitle.setAttribute('data-id', question.id);
+    for (var x = 0; x < question.answers.length; x++) {
+        questionAnswers[x].innerHTML = question.answers[x].answer;
+        radioAnswersList[x].setAttribute('data-id', question.answers[x].id);
+    }
+}
+
+function eventListenerRadioCheck() {
+    radioAnswersList.forEach(function (radio) {
+        radio.addEventListener('click', onCheckAnswer);
+    });
+}
+
 function checkUserAnswer() {
     var questionAnswers = document.querySelectorAll('.question--answer');
     var questionTitle = document.querySelector('.question--title');
@@ -172,15 +226,5 @@ function compareAnswers(correctAnswer, userAnswer) {
     resultContainer.classList.remove('hidden');
 }
 
-function onCheckAnswer() {
-    stopCountDown();
-    checkUserAnswer();
-}
 
-function eventListenerRadioCheck() {
-    radioAnswersList.forEach(function (radio) {
-        radio.addEventListener('click', onCheckAnswer);
-    });
-}
 
-nextQuestionButton.addEventListener('click', onNextQuestion);
