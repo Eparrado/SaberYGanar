@@ -1,0 +1,23 @@
+{
+  "name": "saberyganar",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eparrado/SaberYGanar.git"
+  },
+  "author": "Estela Parrado",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Eparrado/SaberYGanar/issues"
+  },
+  "homepage": "https://github.com/Eparrado/SaberYGanar#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "pug": "^2.0.3"
+  }
+}
