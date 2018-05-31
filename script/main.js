@@ -55,21 +55,39 @@ function application() {
         startAgainButton = document.querySelector('.replay--button');
         startAgainButton.addEventListener('click', onStartAgain);
 
-
-        getQuestions(function (data) {
-            questions = data;
+        console.log(getQuestionsByPromise('http://localhost:3000/api/server-data'));
+        var getPromise = getQuestionsByPromise('http://localhost:3000/api/server-data');
+        getPromise.then(function (text) {
+            console.log(text);
+            questions = JSON.parse(text);
+            console.log(questions);
         });
     }
 
-    function getQuestions(callback) {
-        var request = new XMLHttpRequest();
-        request.addEventListener('load', function () {
-            var data = JSON.parse(request.responseText);
-            callback(data);
-        });
+    // function getQuestions(callback) {
+    //     var request = new XMLHttpRequest();
+    //     request.addEventListener('load', function () {
+    //         var data = JSON.parse(request.responseText);
+    //         callback(data);
+    //     });
 
-        request.open('GET', 'http://localhost:3000/api/server-data');
-        request.send();
+    //     request.open('GET', 'http://localhost:3000/api/server-data');
+    //     request.send();
+    // }
+
+    function getQuestionsByPromise(url) {
+        var promise = new Promise(function (resolve, reject) {
+            var request = new XMLHttpRequest();
+            request.open('GET', url);
+            request.addEventListener('load', function () {
+                resolve(request.responseText);
+            });
+            request.addEventListener('Error', function () {
+                reject(request.status);
+            });
+            request.send();
+        });
+        return promise;
     }
 
     function onStart() {
